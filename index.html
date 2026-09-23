@@ -283,10 +283,26 @@
     }
 
     .upload {
+      position: relative;
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-top: 6px
+      margin-top: 6px;
+      border: 1.5px dashed var(--line);
+      border-radius: 11px;
+      padding: 10px 12px;
+      background: #fdfcfb;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+
+    .upload:hover {
+      border-color: #c9c2b6
+    }
+
+    .upload.dragover {
+      border-color: var(--accent);
+      background: #f1eefa
     }
 
     .thumb {
@@ -299,9 +315,39 @@
       flex: none
     }
 
-    .upload input[type=file] {
+    .thumb:not([src]),
+    .thumb[src=""] {
+      visibility: hidden;
+      width: 0
+    }
+
+    .uptext {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      pointer-events: none;
+      min-width: 0
+    }
+
+    .uptext b {
       font-size: 12.5px;
-      flex: 1
+      font-weight: 600;
+      color: var(--ink)
+    }
+
+    .uptext span {
+      font-size: 11.5px;
+      color: var(--ink-2)
+    }
+
+    .upload input[type=file] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      font-size: 12.5px;
     }
 
     .filerow {
@@ -310,6 +356,34 @@
 
     .filerow label {
       margin-top: 0
+    }
+
+    .upload-sm {
+      flex-direction: column;
+      gap: 4px;
+      padding: 8px 6px;
+      text-align: center
+    }
+
+    .upload-sm .thumb {
+      width: 100%;
+      height: 64px
+    }
+
+    .upload-sm .uptext b {
+      font-size: 11px
+    }
+
+    .upload.has-file .uptext span {
+      display: none
+    }
+
+    .upload.has-file .uptext b {
+      color: var(--ok)
+    }
+
+    .upload.has-file {
+      border-style: solid
     }
 
     .colorline {
@@ -478,8 +552,9 @@
         <legend><span class="n">3</span> Halaman Angka Usia</legend>
         <p class="hint">Foto orangnya (disarankan PNG transparan tanpa background agar menyatu dengan angka & kue).</p>
         <div class="filerow">
-          <div class="upload">
+          <div class="upload" data-drop="cut">
             <img class="thumb" id="th_cut" alt="">
+            <div class="uptext"><b>Tarik &amp; taruh foto di sini</b><span>atau klik untuk pilih file</span></div>
             <input type="file" id="f_cut" accept="image/*">
           </div>
         </div>
@@ -489,8 +564,9 @@
         <legend><span class="n">4</span> Halaman Surat</legend>
         <div class="filerow">
           <label>Foto polaroid</label>
-          <div class="upload">
+          <div class="upload" data-drop="p6">
             <img class="thumb" id="th_p6" alt="">
+            <div class="uptext"><b>Tarik &amp; taruh foto di sini</b><span>atau klik untuk pilih file</span></div>
             <input type="file" id="f_p6" accept="image/*">
           </div>
         </div>
@@ -534,16 +610,21 @@ Happy birthday, my love. I love you more than words can say.</textarea>
         <legend><span class="n">6</span> I Love You</legend>
         <p class="hint">5 foto yang bergulir terus-menerus, plus teks di bawahnya.</p>
         <div class="row c3" style="grid-template-columns:repeat(5,1fr)">
-          <div class="upload" style="flex-direction:column;gap:6px"><img class="thumb" id="th_f1" alt=""><input
-              type="file" id="f_f1" accept="image/*" style="width:100%"></div>
-          <div class="upload" style="flex-direction:column;gap:6px"><img class="thumb" id="th_f2" alt=""><input
-              type="file" id="f_f2" accept="image/*" style="width:100%"></div>
-          <div class="upload" style="flex-direction:column;gap:6px"><img class="thumb" id="th_f3" alt=""><input
-              type="file" id="f_f3" accept="image/*" style="width:100%"></div>
-          <div class="upload" style="flex-direction:column;gap:6px"><img class="thumb" id="th_f4" alt=""><input
-              type="file" id="f_f4" accept="image/*" style="width:100%"></div>
-          <div class="upload" style="flex-direction:column;gap:6px"><img class="thumb" id="th_f5" alt=""><input
-              type="file" id="f_f5" accept="image/*" style="width:100%"></div>
+          <div class="upload upload-sm" data-drop="f1"><img class="thumb" id="th_f1" alt="">
+            <div class="uptext"><b>Tarik foto</b></div><input type="file" id="f_f1" accept="image/*">
+          </div>
+          <div class="upload upload-sm" data-drop="f2"><img class="thumb" id="th_f2" alt="">
+            <div class="uptext"><b>Tarik foto</b></div><input type="file" id="f_f2" accept="image/*">
+          </div>
+          <div class="upload upload-sm" data-drop="f3"><img class="thumb" id="th_f3" alt="">
+            <div class="uptext"><b>Tarik foto</b></div><input type="file" id="f_f3" accept="image/*">
+          </div>
+          <div class="upload upload-sm" data-drop="f4"><img class="thumb" id="th_f4" alt="">
+            <div class="uptext"><b>Tarik foto</b></div><input type="file" id="f_f4" accept="image/*">
+          </div>
+          <div class="upload upload-sm" data-drop="f5"><img class="thumb" id="th_f5" alt="">
+            <div class="uptext"><b>Tarik foto</b></div><input type="file" id="f_f5" accept="image/*">
+          </div>
         </div>
         <label for="f_iloveyou">Isi teks (pisahkan tiap paragraf dengan baris kosong)</label>
         <textarea id="f_iloveyou" rows="8">Hari ini bukan cuma tentang bertambahnya usiamu, tapi tentang merayakan hadirmu di dunia ini, orang yang membuat hari-hariku terasa jauh lebih bahagia dan bermakna.
@@ -557,8 +638,9 @@ Selamat ulang tahun, cintaku. Aku sangat bersyukur bisa berjalan menyusuri waktu
         <legend><span class="n">7</span> Beautiful Flowers</legend>
         <div class="filerow">
           <label>Foto buket bunga</label>
-          <div class="upload">
+          <div class="upload" data-drop="bq">
             <img class="thumb" id="th_bq" alt="">
+            <div class="uptext"><b>Tarik &amp; taruh foto di sini</b><span>atau klik untuk pilih file</span></div>
             <input type="file" id="f_bq" accept="image/*">
           </div>
         </div>
@@ -1548,16 +1630,39 @@ Selamat ulang tahun, cintaku. Aku sangat bersyukur bisa berjalan menyusuri waktu
       });
 
       /* ---------- thumbnail previews ---------- */
+      function showThumb(file, thumb, box) {
+        if (!file) { thumb.removeAttribute('src'); box.classList.remove('has-file'); return; }
+        const reader = new FileReader();
+        reader.onload = e => { thumb.src = e.target.result; box.classList.add('has-file'); };
+        reader.readAsDataURL(file);
+      }
       ['cut', 'p6', 'bq', 'f1', 'f2', 'f3', 'f4', 'f5'].forEach(key => {
-        const input = $('#f_' + key), thumb = $('#th_' + key);
-        input.addEventListener('change', () => {
-          const file = input.files[0];
-          if (!file) { thumb.removeAttribute('src'); return; }
-          const reader = new FileReader();
-          reader.onload = e => thumb.src = e.target.result;
-          reader.readAsDataURL(file);
+        const input = $('#f_' + key), thumb = $('#th_' + key), box = document.querySelector(`[data-drop="${key}"]`);
+        input.addEventListener('change', () => showThumb(input.files[0], thumb, box));
+
+        // drag & drop support
+        ['dragenter', 'dragover'].forEach(evt => box.addEventListener(evt, e => {
+          e.preventDefault(); e.stopPropagation(); box.classList.add('dragover');
+        }));
+        ['dragleave', 'dragend'].forEach(evt => box.addEventListener(evt, e => {
+          e.preventDefault(); e.stopPropagation(); box.classList.remove('dragover');
+        }));
+        box.addEventListener('drop', e => {
+          e.preventDefault(); e.stopPropagation();
+          box.classList.remove('dragover');
+          const file = e.dataTransfer.files && e.dataTransfer.files[0];
+          if (!file) return;
+          if (!file.type.startsWith('image/')) { alert('File yang ditaruh bukan gambar. Coba file JPG, PNG, atau WEBP.'); return; }
+          const dt = new DataTransfer();
+          dt.items.add(file);
+          input.files = dt.files;
+          showThumb(file, thumb, box);
         });
       });
+      // stop the browser from opening a dropped file if it misses a dropzone
+      ['dragover', 'drop'].forEach(evt => window.addEventListener(evt, e => {
+        if (!e.target.closest('.upload')) e.preventDefault();
+      }));
       $('#f_song').addEventListener('change', () => {
         const f = $('#f_song').files[0];
         $('#songInfo').textContent = f ? `Terpilih: ${f.name} (${(f.size / 1e6).toFixed(1)} MB)` : '';
